@@ -42,22 +42,38 @@ app.post('/orders', async (req, res) => {
 });
 
 // PUT update pesanan (contohnya update status/order)
-app.put('/orders/:id', async (req, res) => {
+// PUT khusus update status pesanan
+// PUT update hanya status pesanan
+app.put('/orders/:id/status', async (req, res) => {
     const { id } = req.params;
-    const updateData = req.body;
+    const { status } = req.body;
 
-    const order = await Order.findByIdAndUpdate(id, updateData, { new: true });
+    // Validasi status
+    if (!['pending', 'completed'].includes(status)) {
+        return res.status(400).json({ message: "Status must be either 'pending' or 'completed'" });
+    }
+
+    const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
+
     if (!order) return res.status(404).json({ message: "Order not found" });
 
     res.json(order);
 });
 
+
 // DELETE hapus pesanan
 app.delete('/orders/:id', async (req, res) => {
     const { id } = req.params;
-    await Order.findByIdAndDelete(id);
-    res.json({ message: "Order deleted" });
+
+    const order = await Order.findByIdAndDelete(id);
+
+    if (!order) {
+        return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.json({ message: "Order deleted successfully" });
 });
+
 
 // Server start
 app.listen(port, () => {

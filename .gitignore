@@ -1,0 +1,27 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# dotenv files (jika pakai env untuk konfigurasi rahasia)
+.env
+.env.*
+
+# Folder database MongoDB lokal
+data/
+data/db/
+dump/
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# Misc
+*.swp
